@@ -23,6 +23,8 @@ Route::group([
     ],function (){
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/send-reset-password-link', [AuthController::class, 'sendResetPasswordLink']);
+        Route::post('/confirm-reset-password-link', [AuthController::class, 'confirmResetPasswordLink']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
