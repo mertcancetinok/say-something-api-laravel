@@ -22,6 +22,5 @@ return [
     'password_recovery_link_expired' => 'Şifre sıfırlama bağlantısı zaman aşımına uğradı',
     'password_recovery_key_not_match' => 'Şifre sıfırlama anahtarı eşleşmedi',
     'password_recovery_key_match' => 'Şifre sıfırlama anahtarı eşleşti',
-
-
+    'password_reset_set_new_password_success' => 'Yeni şifreniz başarıyla kaydedildi',
 ];

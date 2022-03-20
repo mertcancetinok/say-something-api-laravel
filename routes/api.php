@@ -25,6 +25,7 @@ Route::group([
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/send-reset-password-link', [AuthController::class, 'sendResetPasswordLink']);
         Route::post('/confirm-reset-password-link', [AuthController::class, 'confirmResetPasswordLink']);
+        Route::post('/reset-password-set-new-password', [AuthController::class, 'resetPasswordSetNewPassword']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/user-profile', [AuthController::class, 'userProfile']);

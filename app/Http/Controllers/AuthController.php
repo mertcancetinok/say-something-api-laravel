@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'sendResetPasswordLink','confirmResetPasswordLink']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'sendResetPasswordLink','confirmResetPasswordLink','resetPasswordSetNewPassword']]);
     }
 
     /**
@@ -98,7 +98,7 @@ class AuthController extends Controller
 
     public function confirmResetPasswordLink(Request $request)
     {
-        /*
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'recovery_key' => 'required|string',
@@ -107,7 +107,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        */
+
 
         $user = User::where('email', $request->email)->first();
 
@@ -134,6 +134,33 @@ class AuthController extends Controller
         return response()->json(['message' => __('auth.password_recovery_key_match')], 200);
 
     }
+
+    public function resetPasswordSetNewPassword(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'recovery_key' => 'required|string',
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        if ($this->confirmResetPasswordLink($request)->getStatusCode() != 200)
+        {
+            return $this->confirmResetPasswordLink($request);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return response()->json(['message' => __('auth.password_reset_set_new_password_success')], 200);
+
+    }
+
 
     /**
      * Log the user out (Invalidate the token).

@@ -22,4 +22,6 @@ return [
     'password_recovery_link_expired' => 'Password recovery link has been expired.',
     'password_recovery_key_not_match' => 'Password recovery key does not match.',
     'password_recovery_key_match' => 'Password recovery key match.',
+    'password_reset_set_new_password_success' => 'You have successfully set new password.',
+
 ];
