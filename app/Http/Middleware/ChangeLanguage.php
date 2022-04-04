@@ -17,10 +17,10 @@ class ChangeLanguage
      */
     public function handle(Request $request, Closure $next)
     {
-        App::setLocale('tr');
-        if(isset($request->lang)){
-            App::setLocale($request->lang);
-        }
+        $local = ($request->hasHeader('X-localization')) ? $request->header('X-localization') : 'en';
+
+        app()->setLocale($local);
+
         return $next($request);
     }
 }
