@@ -21,11 +21,11 @@ class PostCommentsController extends Controller
     {
         $postComment = PostComment::create([
             'post_id' => $request->post_id,
-            'user_id' => $request->user_id,
+            'user_id' => auth()->user()->id,
             'comment' => $request->comment,
         ]);
 
-        return response()->json([$postComment]);
+        return response()->json($postComment);
     }
 
     public function show($lang,$id)
@@ -34,7 +34,7 @@ class PostCommentsController extends Controller
         if (is_null($postComment)) {
             return response()->json(['message' => 'Record not found'], 404);
         }
-        return response()->json([PostComment::findOrFail($id)]);
+        return response()->json(PostComment::findOrFail($id));
     }
 
     public function update(Request $request, $lang,$id)
@@ -45,7 +45,7 @@ class PostCommentsController extends Controller
         }
         $postComment->update($request->all());
 
-        return response()->json([$postComment]);
+        return response()->json($postComment);
     }
 
     public function destroy($lang,$id)

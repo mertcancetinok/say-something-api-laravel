@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostCommentsController;
+use App\Http\Controllers\UsersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,6 +36,17 @@ Route::group([
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
+
+    Route::group([
+        'prefix' => "users"
+    ],function (){
+        Route::post('/me', [UsersController::class, 'me']);
+        Route::put('/update', [UsersController::class, 'update']);
+        Route::put('/update-password', [UsersController::class, 'updatePassword']);
+        Route::post('/confirm-email', [UsersController::class, 'confirmEmail']);
+        Route::post('/confirm-email-code', [UsersController::class, 'confirmEmailCode']);
+    });
+
     Route::group([
         'prefix' => "posts"
     ],function (){

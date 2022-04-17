@@ -38,17 +38,21 @@ class PostsController extends Controller
             'title' => $request->title,
             'created_by' => auth()->user()->id,
         ]);
-        return response()->json([$post], 201);
+        return response()->json($post, 201);
     }
 
 
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::where("id",$id)->with('commentCount')
+            ->with('comments', 'comments.user')
+            ->with('category')
+            ->with('author')
+            ->first();
         if (is_null($post)) {
             return response()->json(['error' => 'Post not found'], 404);
         }
-        return response()->json([$post]);
+        return response()->json($post);
     }
 
 
