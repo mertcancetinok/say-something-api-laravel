@@ -17,5 +17,6 @@ return [
     'current_password_wrong' => 'The current password is wrong.',
     'email_expire' => 'Your email code has expired.Please request a new one.',
     'email_code_wrong' => 'Your email code is wrong.',
-
+    'user_not_active' => 'Your account is not active.',
+    'user_not_found' => 'User not found.',
 ];

@@ -17,4 +17,5 @@ return [
     'current_password_wrong' => 'Geçerli şifreniz yanlış.',
     'email_expire' => 'Doğrulama kodunuz zaman aşımına uğradı.Yeni bir doğrulama kodu isteyin.',
     'email_code_wrong' => 'Doğrulama kodunuz yanlış.',
+    'user_not_found' => 'Kullanıcı bulunamadı.',
 ];

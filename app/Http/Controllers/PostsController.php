@@ -19,6 +19,7 @@ class PostsController extends Controller
             ->with('commentCount')
             ->with('comments', 'comments.user')
             ->with('category')
+            ->orderBy('posts.created_at', 'desc')
             ->get();
         return response()->json($data);
     }
@@ -27,6 +28,7 @@ class PostsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
@@ -36,6 +38,7 @@ class PostsController extends Controller
 
         $post = Post::create([
             'title' => $request->title,
+            'category_id' => $request->category_id,
             'created_by' => auth()->user()->id,
         ]);
         return response()->json($post, 201);

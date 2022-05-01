@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'sendResetPasswordLink','confirmResetPasswordLink','resetPasswordSetNewPassword']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'sendResetPasswordLink', 'confirmResetPasswordLink', 'resetPasswordSetNewPassword']]);
     }
 
     /**
@@ -27,6 +27,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+
         $validator = Validator::make($request->all(),
             [
                 'email' => 'required|email',
@@ -35,6 +36,13 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && !$user->is_active) {
+            return response()->json(['message' => 'User not found'], 403);
+        }
+
         if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -80,6 +88,7 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 400);
         }
         $user = User::where('email', $request->email)->first();
+
         if (!$user) {
             return response()->json(['error' => __('auth.user_not_found')], 404);
         }
@@ -123,7 +132,7 @@ class AuthController extends Controller
             return response()->json(['error' => __('auth.password_recovery_not_found')], 404);
         }
 
-        if (now()->diffInMinutes($passwordRecovery->expire_at) > 10){
+        if (now()->diffInMinutes($passwordRecovery->expire_at) > 10) {
             return response()->json(['error' => __('auth.password_recovery_link_expired')], 400);
         }
 
@@ -148,8 +157,7 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        if ($this->confirmResetPasswordLink($request)->getStatusCode() != 200)
-        {
+        if ($this->confirmResetPasswordLink($request)->getStatusCode() != 200) {
             return $this->confirmResetPasswordLink($request);
         }
 

@@ -14,7 +14,7 @@ class PostCommentsController extends Controller
 
     public function index()
     {
-        return response()->json([PostComment::all()]);
+        return response()->json(PostComment::all());
     }
 
     public function store(Request $request)
@@ -28,7 +28,7 @@ class PostCommentsController extends Controller
         return response()->json($postComment);
     }
 
-    public function show($lang,$id)
+    public function show($id)
     {
         $postComment = PostComment::find($id);
         if (is_null($postComment)) {
@@ -37,7 +37,7 @@ class PostCommentsController extends Controller
         return response()->json(PostComment::findOrFail($id));
     }
 
-    public function update(Request $request, $lang,$id)
+    public function update(Request $request, $id)
     {
         $postComment = PostComment::find($id);
         if (is_null($postComment)) {
@@ -48,7 +48,7 @@ class PostCommentsController extends Controller
         return response()->json($postComment);
     }
 
-    public function destroy($lang,$id)
+    public function destroy($id)
     {
         $postComment = PostComment::find($id);
 

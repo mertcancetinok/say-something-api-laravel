@@ -74,4 +74,16 @@ class UsersController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function banUser(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        if ($user == null) {
+            return response()->json(['message' => __('user.user_not_found')], 422);
+        }
+        $user->is_active = false;
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
+
 }

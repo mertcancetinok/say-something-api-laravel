@@ -22,7 +22,7 @@ Route::get('not-login',function (){
 })->name('not-login');
 
 Route::group([
-    'middleware' => ['api','changeLanguage']
+    'middleware' => ['api','changeLanguage'],
 ], function () {
     Route::group([
         'prefix' => "auth"
@@ -38,27 +38,31 @@ Route::group([
     });
 
     Route::group([
-        'prefix' => "users"
+        'prefix' => "users",
+        'middleware' => ['bannedUserHandler']
     ],function (){
         Route::post('/me', [UsersController::class, 'me']);
         Route::put('/update', [UsersController::class, 'update']);
         Route::put('/update-password', [UsersController::class, 'updatePassword']);
         Route::post('/confirm-email', [UsersController::class, 'confirmEmail']);
         Route::post('/confirm-email-code', [UsersController::class, 'confirmEmailCode']);
+        Route::put('/ban', [UsersController::class, 'banUser'])->middleware('admin');
     });
 
     Route::group([
-        'prefix' => "posts"
+        'prefix' => "posts",
+        'middleware' => ['bannedUserHandler']
     ],function (){
         Route::get('/', [PostsController::class, 'index']);
         Route::get('/{id}', [PostsController::class, 'show']);
-        Route::post('/', [PostsController::class, 'store']);
-        Route::put('/{id}', [PostsController::class, 'update']);
-        Route::delete('/{id}', [PostsController::class, 'destroy']);
+        Route::post('/', [PostsController::class, 'store'])->middleware('admin');
+        Route::put('/{id}', [PostsController::class, 'update'])->middleware('admin');
+        Route::delete('/{id}', [PostsController::class, 'destroy'])->middleware('admin');
     });
 
     Route::group([
-        'prefix' => "post-comments"
+        'prefix' => "post-comments",
+        'middleware' => ['bannedUserHandler']
     ],function (){
         Route::get('/', [PostCommentsController::class, 'index']);
         Route::get('/{id}', [PostCommentsController::class, 'show']);
@@ -68,7 +72,8 @@ Route::group([
     });
 
     Route::group([
-        'prefix' => "categories"
+        'prefix' => "categories",
+        'middleware' => ['bannedUserHandler']
     ],function (){
         Route::get('/', [CategoriesController::class, 'index']);
         Route::get('/{id}', [CategoriesController::class, 'show']);
