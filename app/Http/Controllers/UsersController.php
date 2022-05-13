@@ -23,7 +23,7 @@ class UsersController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-        if (User::where('email', $request->email)->first() != null) {
+        if (User::where('email', $request->email)->where("id",'!=',$user->id)->first() != null) {
             return response()->json(['message' => __('user.email_exists')], 422);
         }
         $user->update($request->all());
