@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->bigInteger('created_by')->unsigned();
             $table->string('title');
             $table->boolean('is_active')->default(true);
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }

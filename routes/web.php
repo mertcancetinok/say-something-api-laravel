@@ -25,3 +25,13 @@ Route::get('/clear-all', function () {
         return "Cache is cleared";
 
 });
+
+Route::get('/cdn', function () {
+        Artisan::call('cdn:clear');
+        Artisan::call('cdn:cache');
+
+        return env('APP_CDN');
+
+});
+
+

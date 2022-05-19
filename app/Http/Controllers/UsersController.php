@@ -6,7 +6,8 @@ use App\Helpers\MailHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class UsersController extends Controller
 {
@@ -72,6 +73,30 @@ class UsersController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
         return response()->json(['success' => true]);
+    }
+
+    public function updateProfilePicture(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'base64Image' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $user = auth()->user();
+
+        $name = time().'.' . explode('/', explode(':', substr($request->base64Image, 0, strpos($request->base64Image, ';')))[1])[1];
+
+        Image::make($request->base64Image)->save(public_path('user-images/').$name);
+
+        $user->profile_photo = env('APP_CDN') . '/user-images/' . $name;
+
+        $user->save();
+
+        return response()->json(['success' => true,'user' => auth()->user()]);
+
     }
 
     public function banUser(Request $request)

@@ -44,6 +44,7 @@ Route::group([
         Route::post('/me', [UsersController::class, 'me']);
         Route::put('/update', [UsersController::class, 'update']);
         Route::put('/update-password', [UsersController::class, 'updatePassword']);
+        Route::put('/update-profile-picture', [UsersController::class, 'updateProfilePicture']);
         Route::post('/confirm-email', [UsersController::class, 'confirmEmail']);
         Route::post('/confirm-email-code', [UsersController::class, 'confirmEmailCode']);
         Route::put('/ban', [UsersController::class, 'banUser'])->middleware('admin');
