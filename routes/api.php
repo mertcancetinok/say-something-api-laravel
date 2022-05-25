@@ -21,6 +21,14 @@ Route::get('not-login',function (){
     return response()->json([],401);
 })->name('not-login');
 
+Route::post('test-mail',function (){
+    \App\Helpers\MailHelper::ConfirmEmail("147258","cetinokmertcan@gmail.com");
+    return response()->json([
+        'from' => env('MAIL_USERNAME'),
+        'to' => "cetinokmertcan@gmail.com"
+    ]);
+});
+
 Route::group([
     'middleware' => ['api','changeLanguage'],
 ], function () {

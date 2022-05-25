@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\NotificationHelper;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Kutia\Larafirebase\Facades\Larafirebase;
 
 class PostsController extends Controller
 {
@@ -26,6 +29,7 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'category_id' => 'required|exists:categories,id',
@@ -41,6 +45,10 @@ class PostsController extends Controller
             'category_id' => $request->category_id,
             'created_by' => auth()->user()->id,
         ]);
+            
+        NotificationHelper::Send($request->title,"Sözümün Eri");
+
+
         return response()->json($post, 201);
     }
 
